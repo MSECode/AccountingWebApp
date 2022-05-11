@@ -1,11 +1,105 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    scroll-behavior: smooth;
+.start {
+    background-color: #131313;
+    padding: 60px 0;
 }
 
-html {
-    scroll-behavior: smooth;
+.start__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 90%;
+    text-align: center;
+    padding: 15px 30px 40px 30px;
+}
+
+.start__header h1 {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.start__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    height: 90%;
+    z-index: 1;
+    width: 100%;
+    max-width: 1300px;
+    padding: 25px 50px;
+}
+
+.start__table--container {
+    color: #fff;
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.start__table--container h1 {
+    font-size: 2rem;
+    background-color: #ff3b6f;
+    background-image: linear-gradient(to top, #ff087b 0%, #ed1a52 100%);
+    background-size: 100%;
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    margin-top: 80px;
+}
+
+.start__table--container h2 {
+    font-size: 2rem;
+    background: #ff8177;
+    background: -webkit-linear-gradient(to right, #9114ff, #da22ff);
+    background: linear-gradient(to right, #8f0eff, #da22ff);
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+}
+
+.start__table--container p {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.start__diagram--container {
+    color: #fff;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.start__diagram--card {
+    margin: 10px;
+    height: 500px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
+}
+
+/* Expenses form section */
+input[type='text'],
+input[type='number'] {
+  border: 1px solid #dedede;
+  border-radius: 2px;
+  display: block;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
 }

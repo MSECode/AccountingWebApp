@@ -7,6 +7,8 @@
     <title> Set your Budget </title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/navbar-style.css">
+    <link rel="stylesheet" href="/css/start-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <!-- Navbar Section -->
@@ -21,52 +23,35 @@
         </div>
     </nav>
 
-    <!-- Main Section -->
-    <div class="main__start">
-        <h1>These are your Accounts and your Expenses</h1>
+    <!-- Start Section -->
+    <div class="start">
+        <div class="start__header">
+            <h1>These are your Accounts and your Expenses</h1>
+        </div>
+        <div class="start__container">
+            <div class="start__diagram--container">
+                <h1>Expenses</h1>
+                <div class="start__diagram--card"><i class="fas fa-chart-pie"></i></div>
+            </div>
+            <div class="start__table--container">
+                <h2>Here you can insert a new expense</h2>
+                <form class="expense__form" id="addExpense">
+                    <div class="expense__form--control">
+                        <label for="text">Text</label>
+                        <input type="text" id="text" placeholder="Enter text..." />
+                    </div>
+                    <div class="expense__form--control">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" placeholder="Enter amount..." />
+                    </div>
+                    <button class="expense__btn">Add transaction</button>
+                </form>
+                <p>This is the name </p>
+                <p>This is the amount</p>
+                <h1>These are all of your expenses</h1>
+                <h3>Add new transaction</h3>
+            </div>
+        </div>
     </div>
-  
-  <!-- <div class="banner-info">
-      <span><label>Customer Name </label></span>
-      <span><input id="inputCustomerName" type="text" class="text-center" required="" placeholder="Enter Customer Name"></span><br>
-      <span><label>Customer Address </label></span>
-      <span><input id="inputCustomerAddress" type="text" class="text-center" required=""></span><br>
-      <span><label>Customer telephone </label></span>
-      <span><input id="inputCustomerTelephone" type="text" class="text-center" required=""></span><br>
-  </div>
-  <div class="logo">
-      <input type="button" onClick="insertData()" value="Add entry">
-  </div>
-  <script language="javascript">
-      function insertData() {
-          var name = document.getElementById("inputCustomerName").value;
-          var address = document.getElementById("inputCustomerAddress").value;
-          var telephone = document.getElementById("inputCustomerTelephone").value;
-          document.getElementById("insertionPoint").innerHTML += "<tr><td>" + name + "</td><td>" + address + "</td><td>" + telephone + "</td></tr>";
-        
-          // The below part is to clear the values after the entry is added.
-          document.getElementById("inputCustomerName").value = "";
-          document.getElementById("inputCustomerAddress").value = "";
-          document.getElementById("inputCustomerTelephone").value = "";
-      }
-  </script>
-  <table id="t1">
-      <caption>Customer Table</caption>
-      <colgroup>
-          <col span="2" class="c2">
-          <col>
-          <col class="c1">
-      </colgroup>
-      <thead>
-          <tr>
-              <th>Customer Name</th>
-              <th>Customer Address</th>
-              <th>Customer Telephone</th>
-          </tr>
-      </thead>
-      <tbody id="insertionPoint">
-        
-      </tbody>
-  </table> -->
 </body>
 </html>
