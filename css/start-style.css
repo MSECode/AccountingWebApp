@@ -23,10 +23,11 @@
 
 .start__subheader {
     display: flex;
-    justify-content: center;
-    margin-top: 60px;
-    margin-bottom: auto;
-    text-align: center;
+    height: 80px;
+    align-items: center;
+    margin: auto;
+    margin-left: 80px;
+    text-align: left;
     color: #fff;
 }
 
@@ -39,12 +40,51 @@
     grid-template-columns: 1fr 1fr;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
+    margin: 20px auto;
     height: 90%;
     z-index: 1;
     width: 100%;
     max-width: 1300px;
     padding: 25px 50px;
+}
+
+.start__container--form {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+.start__container--form h2 {
+    font-size: 2rem;
+    background-color: #ff3b6f;
+    background-image: linear-gradient(to top, #ff087b 0%, #ed1a52 100%);
+    background-size: 100%;
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-align: center;
+}
+
+.start__container--form p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: #ff8177;
+    background: -webkit-linear-gradient(to right, #9114ff, #da22ff);
+    background: linear-gradient(to right, #8f0eff, #da22ff);
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-align: center;
 }
 
 .start__table--container {
@@ -53,8 +93,9 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
 }
 
 .start__table--container h1 {
@@ -117,6 +158,7 @@
 
 /* General Transaction form section */
 .transaction__form {
+    color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -163,9 +205,9 @@ input[type='number'] {
     list-style-type: none;
     padding: 0;
     margin-bottom: 40px;
-  }
+}
   
-  .list li {
+.list li {
     background-color: #fff;
     box-shadow: var(--box-shadow);
     color: #333;
@@ -174,17 +216,17 @@ input[type='number'] {
     position: relative;
     padding: 10px;
     margin: 10px 0;
-  }
+}
   
-  .list li.plus {
+.list li.plus {
     border-right: 5px solid #2ecc71;
-  }
-  
-  .list li.minus {
+}
+
+.list li.minus {
     border-right: 5px solid #c0392b;
-  }
-  
-  .delete-btn {
+}
+
+.delete-btn {
     cursor: pointer;
     background-color: #e74c3c;
     border: 0;
@@ -198,8 +240,8 @@ input[type='number'] {
     transform: translate(-100%, -50%);
     opacity: 0;
     transition: opacity 0.3s ease;
-  }
-  
-  .list li:hover .delete-btn {
+}
+
+.list li:hover .delete-btn {
     opacity: 1;
-  }
+}

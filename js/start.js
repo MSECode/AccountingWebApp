@@ -1,9 +1,13 @@
-const balance = document.getElementById('balance');
+// Expenses const varibales
+const expenseForm = document.getElementById('addExpense');
 const expenses = document.getElementById('expenses');
-const list = document.getElementById('list');
-const form = document.getElementById('addExpense');
-const text = document.getElementById('text');
-const amount = document.getElementById('amount');
+const expensesList = document.getElementById('expensesList');
+// Incomes const varibales
+const incomeForm = document.getElementById('addIncome');
+const incomes = document.getElementById('incomes');
+const incomesList = document.getElementById('incomesList');
+// General
+const balance = document.getElementById('balance');
 
 // const dummyTransactions = [
 //   { id: 1, text: 'Flower', amount: -20 },
@@ -12,109 +16,160 @@ const amount = document.getElementById('amount');
 //   { id: 4, text: 'Camera', amount: 150 }
 // ];
 
-const localStorageTransactions = JSON.parse(
-  localStorage.getItem('transactions')
-);
 
-let transactions =
-  localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
+// Fancy Feature Part
+// Highlighting mechanism when scrolling
+// Show active section when scrolling
+const highlightSection = () => {
+    const elem = document.querySelector('.highlight');
+    const transactionSection = document.querySelector('#transaction-section');
+    const expensesSection = document.querySelector('#expenses-section');
+    const accountsSection = document.querySelector('#accounts-section');
+    let scrollPos = window.scrollY;
+    console.log(scrollPos);
 
-// Add transaction
-function addTransaction(e) {
-  e.preventDefault();
+    // adds 'highlight' class to my menu items
+    if (window.innerWidth > 960 && scrollPos < 60) {
+        transactionSection.classList.add('highlight')
+        expensesSection.classList.remove('highlight')
 
-  if (text.value.trim() === '' || amount.value.trim() === '' || Math.sign(amount.value) === 1) {
-    alert('Please add a text and a negative amount');
-  } else {
-    const transaction = {
-      id: generateID(),
-      text: text.value,
-      amount: +amount.value,
-      field: Math.sign(amount.value) === 1 ? 'incomes' : 'expenses'
-    };
+        return
+    }
+    else if( window.innerWidth > 960 && scrollPos < 1360) {
+        expensesSection.classList.add('highlight')
+        transactionSection.classList.remove('highlight')
+        accountsSection.classList.remove('highlight')
+        return
+    }
+    else if (window.innerWidth > 960 && scrollPos < 2345) {
+        accountsSection.classList.add('highlight')
+        expensesSection.classList.remove('highlight')
+        return
+    }
 
-    transactions.push(transaction);
-
-    addTransactionDOM(transaction);
-
-    updateValues();
-
-    updateLocalStorage();
-
-    text.value = '';
-    amount.value = '';
-  }
+    if ((elem && window.innerWidth < 960 && scrollPos < 660) || elem) {
+        elem.classList.remove('highlight')
+    }
 }
 
-// Generate random ID
-function generateID() {
-  return Math.floor(Math.random() * 100000000);
-}
+window.addEventListener('scroll', highlightSection);
+window.addEventListener('click', highlightSection);
 
-// Add transactions to DOM list
-function addTransactionDOM(transaction) {
-  // Get sign
-  const sign = transaction.amount < 0 ? '-' : '+';
 
-  const item = document.createElement('li');
 
-  // Add class based on value
-  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+// Main Part for adding items to lists
+// const localStorageTransactions = JSON.parse(
+//   localStorage.getItem('transactions')
+// );
 
-  item.innerHTML = `
-    ${transaction.text} <span>${sign}${Math.abs(
-    transaction.amount
-  )}</span> <button class="delete-btn" onclick="removeTransaction(${
-    transaction.id
-  })">x</button>
-  `;
+// let transactions =
+//   localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
-  list.appendChild(item);
-}
+// // Add transaction
+// function addTransaction(e) {
+//   e.preventDefault();
+//     // If transaction is expense
+//     if (expenseText.value.trim() === '' || expenseCategory.value.trim() === '' || expenseAmount.value.trim() === '') {
+//     alert('Please add a description, a category and an amount');
+//   } else {
+//     const transaction = {
+//       id: generateID(),
+//       text: text.value,
+//       category: category.value,
+//       amount: +amount.value,
+//       field: Math.sign(amount.value) === 1 ? 'incomes' : 'expenses'
+//     };
 
-// Update the balance, income and expense
-function updateValues() {
-  const amounts = transactions.map(transaction => transaction.amount);
+//     transactions.push(transaction);
 
-  const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+//     addTransactionDOM(transaction);
 
-//   const income = amounts
-//     .filter(item => item > 0)
-//     .reduce((acc, item) => (acc += item), 0)
-//     .toFixed(2);
+//     updateValues();
 
-  const expense = (
-    amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) *
-    -1
-  ).toFixed(2);
+//     updateLocalStorage();
 
-  balance.innerText = `${total}`;
-//   money_plus.innerText = `$${income}`;
-  expenses.innerText = `${expense}`;
-}
+//     text.value = '';
+//     amount.value = '';
+//   }
+// }
 
-// Remove transaction by ID
-function removeTransaction(id) {
-  transactions = transactions.filter(transaction => transaction.id !== id);
+// // Generate random ID
+// function generateID() {
+//   return Math.floor(Math.random() * 100000000);
+// }
 
-  updateLocalStorage();
+// // Add transactions to DOM list
+// function addTransactionDOM(transaction) {
+//     // Get sign
+//     const sign = transaction.amount < 0 ? '-' : '+';
 
-  init();
-}
+//     const item = document.createElement('li');
 
-// Update local storage transactions
-function updateLocalStorage() {
-  localStorage.setItem('transactions', JSON.stringify(transactions));
-}
+//     // Add class based on value
+//     item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
 
-// Init app
-function init() {
-  list.innerHTML = '';
+//     item.innerHTML = `
+//         ${transaction.text} 
+//         ${transaction.category} <span>${sign}${Math.abs(
+//         transaction.amount
+//         )}</span> <button class="delete-btn" onclick="removeTransaction(${
+//         transaction.id
+//         })">x</button>
+//     `;
 
-  transactions.forEach(addTransactionDOM);
-  updateValues();
-}
+//     if (transaction.amount < 0 ) {
+//         expensesList.appendChild(item)
+//     }
+//     else {
+//         incomesList.appendChild(item)
+//     }
+// }
 
-init();
+// // Update the balance, income and expense
+// function updateValues() {
+//   const amounts = transactions.map(transaction => transaction.amount);
 
-form.addEventListener('submit', addTransaction);
+//   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+
+// //   const income = amounts
+// //     .filter(item => item > 0)
+// //     .reduce((acc, item) => (acc += item), 0)
+// //     .toFixed(2);
+
+//   const expense = (
+//     amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) *
+//     -1
+//   ).toFixed(2);
+
+//   balance.innerText = `${total}`;
+// //   money_plus.innerText = `$${income}`;
+//   expenses.innerText = `${expense}`;
+// }
+
+// // Remove transaction by ID
+// function removeTransaction(id) {
+//   transactions = transactions.filter(transaction => transaction.id !== id);
+
+//   updateLocalStorage();
+
+//   init();
+// }
+
+// // Update local storage transactions
+// function updateLocalStorage() {
+//   localStorage.setItem('transactions', JSON.stringify(transactions));
+// }
+
+// // Init app
+// function init() {
+//     expensesList.innerHTML = '';
+//     incomesList.innerHTML = '';
+
+//   transactions.forEach(addTransactionDOM);
+//   updateValues();
+// }
+
+// init();
+
+// expenseForm.addEventListener('submit', addTransaction);
+// incomeForm.addEventListener('submit', addTransaction);
