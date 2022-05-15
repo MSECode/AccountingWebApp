@@ -29,7 +29,8 @@ function addTransaction(e) {
     const transaction = {
       id: generateID(),
       text: text.value,
-      amount: +amount.value
+      amount: +amount.value,
+      field: Math.sign(amount.value) === 1 ? 'incomes' : 'expenses'
     };
 
     transactions.push(transaction);
