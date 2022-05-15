@@ -115,15 +115,15 @@
     background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
 }
 
-/* Expenses form section */
-.expense__form {
+/* General Transaction form section */
+.transaction__form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
 }
 
-.expense__form--control {
+.transaction__form--control {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -149,7 +149,7 @@ input[type='number'] {
   width: 100%;
 }
 
-.expense__btn {
+.transaction__btn {
     font-size: 1.5rem;
     font-weight: 600;
     display: flex;

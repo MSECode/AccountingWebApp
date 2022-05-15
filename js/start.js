@@ -23,8 +23,8 @@ let transactions =
 function addTransaction(e) {
   e.preventDefault();
 
-  if (text.value.trim() === '' || amount.value.trim() === '') {
-    alert('Please add a text and amount');
+  if (text.value.trim() === '' || amount.value.trim() === '' || Math.sign(amount.value) === 1) {
+    alert('Please add a text and a negative amount');
   } else {
     const transaction = {
       id: generateID(),
@@ -87,9 +87,9 @@ function updateValues() {
     -1
   ).toFixed(2);
 
-  balance.innerText = `$${total}`;
+  balance.innerText = `${total}`;
 //   money_plus.innerText = `$${income}`;
-  expenses.innerText = `$${expense}`;
+  expenses.innerText = `${expense}`;
 }
 
 // Remove transaction by ID
