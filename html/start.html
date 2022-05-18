@@ -5,10 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Set your Budget </title>
+    <link rel="import" href="/html/chart.html">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/navbar-style.css">
     <link rel="stylesheet" href="/css/start-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <!-- Navbar Section -->
@@ -97,6 +99,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div>
+        <canvas id="myChart" width="400" height="150"></canvas>
     </div>
     <script src="/js/start.js"></script>
 </body>

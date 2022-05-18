@@ -1,15 +1,15 @@
-// Expenses const varibales
-const expenses = document.getElementById('expenses');
-const expensesList = document.getElementById('expensesList');
-// Incomes const varibales
-const incomes = document.getElementById('incomes');
-const incomesList = document.getElementById('incomesList');
 // General
 const transactionForm = document.getElementById('addTransaction');
 const transactionText = document.getElementById('transText');
 const transactionCategory = document.getElementById('transCat');
 const transactionAmount = document.getElementById('transAmount');
-const balance = document.getElementById('balance');
+var balance = document.getElementById('balance');
+// Expenses varibales
+var expenses = document.getElementById('expenses');
+var expensesList = document.getElementById('expensesList');
+// Incomes varibales
+var incomes = document.getElementById('incomes');
+var incomesList = document.getElementById('incomesList');
 
 // const dummyTransactions = [
 //   { id: 1, text: 'Flower', amount: -20 },
@@ -59,18 +59,24 @@ window.addEventListener('click', highlightSection);
 
 
 // Main Part for adding items to lists
-const localStorageTransactions = JSON.parse(
+var localStorageTransactions = JSON.parse(
   localStorage.getItem('transactions')
+);
+
+var localStorageCategories = JSON.parse(
+  localStorage.getItem('categories')
 );
 
 let transactions =
   localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
+let categoryMap =
+  localStorage.getItem('categories') !== null ? localStorageCategories : new Map();
+
 // Add transaction
 function addTransaction(e) {
   e.preventDefault();
-    // If transaction is expense
-    if (transactionText.value.trim() === '' || transactionCategory.value.trim() === '' || transactionAmount.value.trim() === '') {
+  if (transactionText.value.trim() === '' || transactionCategory.value.trim() === '' || transactionAmount.value.trim() === '') {
     alert('Please add a description, a category and an amount');
   } else {
     const transaction = {
@@ -86,6 +92,8 @@ function addTransaction(e) {
     addTransactionDOM(transaction);
 
     updateValues();
+
+    updatecategoryMap(transactionCategory.value, transactionAmount.value);
 
     updateLocalStorage();
 
@@ -131,6 +139,7 @@ function addTransactionDOM(transaction) {
 // Update the balance, income and expense
 function updateValues() {
   const amounts = transactions.map(transaction => transaction.amount);
+  console.log(amounts);
 
   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
@@ -151,6 +160,20 @@ function updateValues() {
   expenses.innerText = `${expense}`;
 }
 
+function updatecategoryMap(key, value) {
+  // Check if category key already present in the Map
+  if (!categoryMap.has(key)) {
+    console.log("This is a new category, adding it to the map...");
+    categoryMap.set(key, Math.abs(value));
+  }
+  else {
+    console.log("This category is already present in the map, updating value of the key");
+    console.log("Before updating: " + categoryMap.get(key));
+    categoryMap.set(key, categoryMap.get(key) + Math.abs(value));
+  }
+  console.log("After updating: " + categoryMap.get(key));
+}
+
 // Remove transaction by ID
 function removeTransaction(id) {
   transactions = transactions.filter(transaction => transaction.id !== id);
@@ -163,15 +186,91 @@ function removeTransaction(id) {
 // Update local storage transactions
 function updateLocalStorage() {
   localStorage.setItem('transactions', JSON.stringify(transactions));
+  localStorage.setItem('categories', JSON.stringify(Array.from(categoryMap.entries())));
 }
 
 // Init app
 function init() {
-    expensesList.innerHTML = '';
-    incomesList.innerHTML = '';
+  expensesList.innerHTML = '';
+  incomesList.innerHTML = '';
 
   transactions.forEach(addTransactionDOM);
   updateValues();
+}
+
+// Chart Part
+const labels = [
+  'Restaurants',
+          'Groceries',
+          'Health',
+          'Shopping',
+          'Transport',
+          'Utilities',
+          'Entartainment',
+          'Services'
+];
+
+const data = {
+  labels: labels,
+          datasets: [{
+            label: 'My First dataset',
+            data: [0, 10, 5, 2, 20, 30, 45],
+            backgroundColor: [
+                'rgb(255, 0, 0)',
+                'rgb(0, 255, 0)',
+                'rgb(0, 0, 255)',
+                'rgb(255, 128, 0)',
+                'rgb(0, 128, 255)',
+                'rgb(255, 0, 128)',
+                'rgb(255, 51, 51)',
+                'rgb(0, 102, 102)'
+            ],
+            borderColor: 'rgb(255, 255, 255)',
+            hoverOffset: 4
+          }]
+};
+const config = {
+  type: 'pie',
+  data: data
+};
+
+const myChart = new Chart(
+  document.getElementById('myChart'),
+  config
+);
+
+function addDataToChart(myChart, transactionCategory, transactionAmount) {
+  myChart.data.labels.push(transactionCategory.value);
+  myChart.data.datasets.forEach((dataset) => {
+    dataset.data.push(transactionAmount.value);
+  });
+  myChart.update();
+}
+
+function removeDataFromChart(myChart) {
+  myChart.data.labels.pop();
+  myChart.data.datasets.forEach((dataset) => {
+    dataset.data.pop();
+  });
+  myChart.update();
+}
+
+function updateConfigByMutating(myChart) {
+  myChart.options.plugins.title.text = 'new title';
+  myChart.update();
+}
+
+function updateConfigAsNewObject(myChart) {
+  myChart.options = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Chart.js'
+      }
+    },
+  };
+  myChart.update();
 }
 
 init();
