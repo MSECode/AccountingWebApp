@@ -1,9 +1,15 @@
-const balance = document.getElementById('balance');
+// Expenses const varibales
 const expenses = document.getElementById('expenses');
-const list = document.getElementById('list');
-const form = document.getElementById('addExpense');
-const text = document.getElementById('text');
-const amount = document.getElementById('amount');
+const expensesList = document.getElementById('expensesList');
+// Incomes const varibales
+const incomes = document.getElementById('incomes');
+const incomesList = document.getElementById('incomesList');
+// General
+const transactionForm = document.getElementById('addTransaction');
+const transactionText = document.getElementById('transText');
+const transactionCategory = document.getElementById('transCat');
+const transactionAmount = document.getElementById('transAmount');
+const balance = document.getElementById('balance');
 
 // const dummyTransactions = [
 //   { id: 1, text: 'Flower', amount: -20 },
@@ -12,6 +18,47 @@ const amount = document.getElementById('amount');
 //   { id: 4, text: 'Camera', amount: 150 }
 // ];
 
+// Fancy Feature Part
+// Highlighting mechanism when scrolling
+// Show active section when scrolling
+const highlightSection = () => {
+    const elem = document.querySelector('.highlight');
+    const transactionSection = document.querySelector('#transaction-section');
+    const expensesSection = document.querySelector('#expenses-section');
+    const accountsSection = document.querySelector('#accounts-section');
+    let scrollPos = window.scrollY;
+    // console.log(scrollPos);
+
+    // adds 'highlight' class to my menu items
+    if (window.innerWidth > 960 && scrollPos < 600) {
+        transactionSection.classList.add('highlight')
+        expensesSection.classList.remove('highlight')
+
+        return
+    }
+    else if( window.innerWidth > 960 && scrollPos < 1400) {
+        expensesSection.classList.add('highlight')
+        transactionSection.classList.remove('highlight')
+        accountsSection.classList.remove('highlight')
+        return
+    }
+    else if (window.innerWidth > 960 && scrollPos < 2345) {
+        accountsSection.classList.add('highlight')
+        expensesSection.classList.remove('highlight')
+        return
+    }
+
+    if ((elem && window.innerWidth < 960 && scrollPos < 600) || elem) {
+        elem.classList.remove('highlight')
+    }
+}
+
+window.addEventListener('scroll', highlightSection);
+window.addEventListener('click', highlightSection);
+
+
+
+// Main Part for adding items to lists
 const localStorageTransactions = JSON.parse(
   localStorage.getItem('transactions')
 );
@@ -22,14 +69,16 @@ let transactions =
 // Add transaction
 function addTransaction(e) {
   e.preventDefault();
-
-  if (text.value.trim() === '' || amount.value.trim() === '' || Math.sign(amount.value) === 1) {
-    alert('Please add a text and a negative amount');
+    // If transaction is expense
+    if (transactionText.value.trim() === '' || transactionCategory.value.trim() === '' || transactionAmount.value.trim() === '') {
+    alert('Please add a description, a category and an amount');
   } else {
     const transaction = {
       id: generateID(),
-      text: text.value,
-      amount: +amount.value
+      text: transactionText.value,
+      category: transactionCategory.value,
+      amount: +transactionAmount.value,
+      field: Math.sign(transactionAmount.value) === 1 ? 'incomes' : 'expenses'
     };
 
     transactions.push(transaction);
@@ -40,8 +89,9 @@ function addTransaction(e) {
 
     updateLocalStorage();
 
-    text.value = '';
-    amount.value = '';
+    transactionText.value = '';
+    transactionCategory.value = '';
+    transactionAmount.value = '';
   }
 }
 
@@ -52,23 +102,30 @@ function generateID() {
 
 // Add transactions to DOM list
 function addTransactionDOM(transaction) {
-  // Get sign
-  const sign = transaction.amount < 0 ? '-' : '+';
+    // Get sign
+    const sign = transaction.amount < 0 ? '-' : '+';
 
-  const item = document.createElement('li');
+    const item = document.createElement('li');
 
-  // Add class based on value
-  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+    // Add class based on value
+    item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
 
-  item.innerHTML = `
-    ${transaction.text} <span>${sign}${Math.abs(
-    transaction.amount
-  )}</span> <button class="delete-btn" onclick="removeTransaction(${
-    transaction.id
-  })">x</button>
-  `;
+    item.innerHTML = `
+        ${transaction.text} 
+        ${transaction.category} 
+        <span>${sign}${Math.abs(
+        transaction.amount
+        )}</span> <button class="delete-btn" onclick="removeTransaction(${
+        transaction.id
+        })">x</button>
+    `;
 
-  list.appendChild(item);
+    if (transaction.amount < 0 ) {
+        expensesList.appendChild(item)
+    }
+    else {
+        incomesList.appendChild(item)
+    }
 }
 
 // Update the balance, income and expense
@@ -77,18 +134,20 @@ function updateValues() {
 
   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
-//   const income = amounts
-//     .filter(item => item > 0)
-//     .reduce((acc, item) => (acc += item), 0)
-//     .toFixed(2);
+  const income = amounts
+    .filter(item => item > 0)
+    .reduce((acc, item) => (acc += item), 0)
+    .toFixed(2);
 
   const expense = (
-    amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) *
+    amounts
+    .filter(item => item < 0)
+    .reduce((acc, item) => (acc += item), 0) *
     -1
   ).toFixed(2);
 
   balance.innerText = `${total}`;
-//   money_plus.innerText = `$${income}`;
+  incomes.innerText = `${income}`;
   expenses.innerText = `${expense}`;
 }
 
@@ -108,7 +167,8 @@ function updateLocalStorage() {
 
 // Init app
 function init() {
-  list.innerHTML = '';
+    expensesList.innerHTML = '';
+    incomesList.innerHTML = '';
 
   transactions.forEach(addTransactionDOM);
   updateValues();
@@ -116,4 +176,4 @@ function init() {
 
 init();
 
-form.addEventListener('submit', addTransaction);
+transactionForm.addEventListener('submit', addTransaction);
