@@ -1,6 +1,6 @@
 .start {
     background-color: #131313;
-    padding: 60px 0;
+    padding: 4rem 0;
 }
 
 .start__header {
@@ -157,6 +157,10 @@
 }
 
 /* General Transaction form section */
+/* .transactions {
+    padding: 10rem 0;
+} */
+
 .transaction__form {
     color: #fff;
     display: flex;
@@ -244,4 +248,12 @@ input[type='number'] {
 
 .list li:hover .delete-btn {
     opacity: 1;
+}
+
+.expenses {
+    padding: 10rem 0;
+}
+
+.accounts {
+    padding: 10rem 0;
 }
