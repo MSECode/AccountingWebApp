@@ -176,11 +176,30 @@ function updatecategoryMap(key, value) {
 
 // Remove transaction by ID
 function removeTransaction(id) {
+  console.log("Id to be removed: " + id)
+  let transactionEl = transactions.find(transaction => (transaction.id === id));
+  console.log("Transaction Element to be removed: " + JSON.stringify(transactionEl));
+  console.log("Category to update: " + transactionEl.category + " without value: " + transactionEl.amount);
+  removeCategoryData(transactionEl.category, transactionEl.amount);
   transactions = transactions.filter(transaction => transaction.id !== id);
-
   updateLocalStorage();
 
   init();
+}
+
+// Update Category if transaction removed
+function removeCategoryData(category, removedAmount) {
+  try {
+    if (!categoryMap.has(category)) {
+      throw("This category should exist, I'm removing a saved datum")
+    }
+    else {
+      categoryMap.set(category, categoryMap.get(category) - Math.abs(removedAmount));
+      console.log("Update category value is: " + categoryMap.get(category));
+    }
+  } catch (e) {
+    alert("Error: " + e);
+  }
 }
 
 // Update local storage transactions
