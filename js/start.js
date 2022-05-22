@@ -11,13 +11,6 @@ var expensesList = document.getElementById('expensesList');
 var incomes = document.getElementById('incomes');
 var incomesList = document.getElementById('incomesList');
 
-// const dummyTransactions = [
-//   { id: 1, text: 'Flower', amount: -20 },
-//   { id: 2, text: 'Salary', amount: 300 },
-//   { id: 3, text: 'Book', amount: -10 },
-//   { id: 4, text: 'Camera', amount: 150 }
-// ];
-
 // Fancy Feature Part
 // Highlighting mechanism when scrolling
 // Show active section when scrolling
@@ -56,22 +49,20 @@ const highlightSection = () => {
 window.addEventListener('scroll', highlightSection);
 window.addEventListener('click', highlightSection);
 
-
-
 // Main Part for adding items to lists
-var localStorageTransactions = JSON.parse(
+const localStorageTransactions = JSON.parse(
   localStorage.getItem('transactions')
 );
 
-var localStorageCategories = JSON.parse(
+const localStorageCategories = JSON.parse(
   localStorage.getItem('categories')
 );
 
-let transactions =
+const transactions =
   localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
-let categoryMap =
-  localStorage.getItem('categories') !== null ? localStorageCategories : new Map();
+const categoryMap =
+  localStorage.getItem('categories') !== null ? new Map(localStorageCategories) : new Map();
 
 // Add transaction
 function addTransaction(e) {
@@ -96,6 +87,8 @@ function addTransaction(e) {
     updatecategoryMap(transactionCategory.value, transactionAmount.value);
 
     updateLocalStorage();
+
+    updateChart(transactionCategory.value);
 
     transactionText.value = '';
     transactionCategory.value = '';
@@ -174,6 +167,14 @@ function updatecategoryMap(key, value) {
   console.log("After updating: " + categoryMap.get(key));
 }
 
+function updateChart(key) {
+  if (categoryMap.has(key)) {
+    let value = categoryMap.get(key);
+    addDataToChart(myChart, key, value);
+  }
+}
+
+
 // Remove transaction by ID
 function removeTransaction(id) {
   console.log("Id to be removed: " + id)
@@ -218,7 +219,7 @@ function init() {
 }
 
 // Chart Part
-const labels = [
+let labels = [
   'Restaurants',
           'Groceries',
           'Health',
@@ -229,7 +230,7 @@ const labels = [
           'Services'
 ];
 
-const data = {
+let data = {
   labels: labels,
           datasets: [{
             label: 'My First dataset',
@@ -253,17 +254,17 @@ const config = {
   data: data
 };
 
-const myChart = new Chart(
+var myChart = new Chart(
   document.getElementById('myChart'),
   config
 );
 
-function addDataToChart(myChart, transactionCategory, transactionAmount) {
-  myChart.data.labels.push(transactionCategory.value);
-  myChart.data.datasets.forEach((dataset) => {
-    dataset.data.push(transactionAmount.value);
+function addDataToChart(chart, category, amount) {
+  chart.data.labels.push(category);
+  chart.data.datasets.forEach((dataset) => {
+    dataset.data.push(amount);
   });
-  myChart.update();
+  chart.update();
 }
 
 function removeDataFromChart(myChart) {
@@ -274,23 +275,23 @@ function removeDataFromChart(myChart) {
   myChart.update();
 }
 
-function updateConfigByMutating(myChart) {
-  myChart.options.plugins.title.text = 'new title';
-  myChart.update();
-}
+// function updateConfigByMutating(myChart) {
+//   myChart.options.plugins.title.text = 'new title';
+//   myChart.update();
+// }
 
-function updateConfigAsNewObject(myChart) {
-  myChart.options = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Chart.js'
-      }
-    },
-  };
-  myChart.update();
-}
+// function updateConfigAsNewObject(myChart) {
+//   myChart.options = {
+//     responsive: true,
+//     plugins: {
+//       title: {
+//         display: true,
+//         text: 'Chart.js'
+//       }
+//     },
+//   };
+//   myChart.update();
+// }
 
 init();
 
