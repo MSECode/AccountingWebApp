@@ -4,6 +4,7 @@ const transactionText = document.getElementById('transText');
 const transactionCategory = document.getElementById('transCat');
 const transactionAmount = document.getElementById('transAmount');
 var balance = document.getElementById('balance');
+var ctx = document.getElementById('myChart').getContext('2d');
 // Expenses varibales
 var expenses = document.getElementById('expenses');
 var expensesList = document.getElementById('expensesList');
@@ -50,19 +51,52 @@ window.addEventListener('scroll', highlightSection);
 window.addEventListener('click', highlightSection);
 
 // Main Part for adding items to lists
-const localStorageTransactions = JSON.parse(
+var localStorageTransactions = JSON.parse(
   localStorage.getItem('transactions')
 );
 
-const localStorageCategories = JSON.parse(
-  localStorage.getItem('categories')
+var localStorageCategories = new Map(JSON.parse(
+  localStorage.getItem('categories'))
 );
 
-const transactions =
+var transactions =
   localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
-const categoryMap =
-  localStorage.getItem('categories') !== null ? new Map(localStorageCategories) : new Map();
+var categoryMap =
+  localStorage.getItem('categories') !== null ? localStorageCategories : new Map();
+
+
+// Chart skeleton
+var categoryArray = [];
+var dataChartArray = [];
+
+var chartData = {
+  labels: categoryArray,
+  datasets: [{
+    label: 'My first dataset',
+    data: dataChartArray,
+    backgroundColor: [
+      "#FF6633",
+      "#FFB399",
+      "#FF33FF",
+      "#FFFF99",
+      "#00B3E6",
+      "#E6B333",
+      "#3366E6",
+      "#999966",
+      "#809980",
+      "#E6FF80",
+      "#1AFF33",
+      "#999933",
+      "#FF3380",
+      "#CCCC00",
+      "#66E64D",
+      "#4D80CC"
+    ],
+    borderColor: 'rgb(255, 255, 255)',
+    hoverOffset: 4
+  }]
+}
 
 // Add transaction
 function addTransaction(e) {
@@ -170,7 +204,7 @@ function updatecategoryMap(key, value) {
 function updateChart(key) {
   if (categoryMap.has(key)) {
     let value = categoryMap.get(key);
-    addDataToChart(myChart, key, value);
+    addNewDataToChart(myChart, key, value);
   }
 }
 
@@ -216,63 +250,47 @@ function init() {
 
   transactions.forEach(addTransactionDOM);
   updateValues();
+  intializeChart();
 }
 
-// Chart Part
-let labels = [
-  'Restaurants',
-          'Groceries',
-          'Health',
-          'Shopping',
-          'Transport',
-          'Utilities',
-          'Entartainment',
-          'Services'
-];
+// Chart Functions
+//TODO understand how to generate different colors automatically
+function intializeChart() {
+  let i = 0;
+  // If categoryMap not empty, initialize the labels
+  console.log("Initializing chart...");
+  if (transactions.size !== 0) {
+    console.log("Categories Map not empty, passing data...");
+    transactions.forEach((item) => {
+      categoryArray.push(item.category);
+      console.log("Adding new label: " + categoryArray[i]);
+      dataChartArray.push(item.amount);
+      console.log("Adding new data: " + dataChartArray[i]);
+      i++;
+    });
+  }
+  myChart = new Chart(ctx, {type: 'pie', data: chartData} );
+}
 
-let data = {
-  labels: labels,
-          datasets: [{
-            label: 'My First dataset',
-            data: [0, 10, 5, 2, 20, 30, 45],
-            backgroundColor: [
-                'rgb(255, 0, 0)',
-                'rgb(0, 255, 0)',
-                'rgb(0, 0, 255)',
-                'rgb(255, 128, 0)',
-                'rgb(0, 128, 255)',
-                'rgb(255, 0, 128)',
-                'rgb(255, 51, 51)',
-                'rgb(0, 102, 102)'
-            ],
-            borderColor: 'rgb(255, 255, 255)',
-            hoverOffset: 4
-          }]
-};
-const config = {
-  type: 'pie',
-  data: data
-};
-
-var myChart = new Chart(
-  document.getElementById('myChart'),
-  config
-);
-
-function addDataToChart(chart, category, amount) {
-  chart.data.labels.push(category);
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data.push(amount);
-  });
+// TODO add new color for the new category
+function addNewDataToChart(chart, category, amount) {
+  if (!categoryMap.has(category)) {
+    chart.data.labels.push(category);
+    chart.data.datasets[0].data.push(amount);
+  }
+  else {
+    let catIndex = chart.data.labels.indexOf(category);
+    chart.data.datasets[0].data[catIndex] = amount;
+  }
+  
   chart.update();
 }
 
-function removeDataFromChart(myChart) {
-  myChart.data.labels.pop();
-  myChart.data.datasets.forEach((dataset) => {
-    dataset.data.pop();
-  });
-  myChart.update();
+function removeDataFromChart(chart) {
+  chart.data.labels.pop();
+  chart.data.datasets[0].data.pop();
+
+  chart.update();
 }
 
 // function updateConfigByMutating(myChart) {
