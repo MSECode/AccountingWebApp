@@ -1,3 +1,7 @@
+//TODO
+// Understand why Map behaviour when trying to get data to pass to the chart 
+// is shitty as fuck
+
 // General
 const transactionForm = document.getElementById('addTransaction');
 const transactionText = document.getElementById('transText');
@@ -259,15 +263,15 @@ function intializeChart() {
   let i = 0;
   // If categoryMap not empty, initialize the labels
   console.log("Initializing chart...");
-  if (transactions.size !== 0) {
+  if (categoryMap.size !== 0) {
     console.log("Categories Map not empty, passing data...");
-    transactions.forEach((item) => {
-      categoryArray.push(item.category);
+    for (const [key, value] of categoryMap) {
+      categoryArray.push(key);
       console.log("Adding new label: " + categoryArray[i]);
-      dataChartArray.push(item.amount);
+      dataChartArray.push(value);
       console.log("Adding new data: " + dataChartArray[i]);
       i++;
-    });
+    }
   }
   myChart = new Chart(ctx, {type: 'pie', data: chartData} );
 }
