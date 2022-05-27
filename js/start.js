@@ -206,7 +206,9 @@ function updatecategoryMap(key, value) {
 }
 
 function updateChart(key) {
+  console.log("Updating Chart...");
   if (categoryMap.has(key)) {
+    console.log("categoryMap has the new key, adding new data to chart...");
     let value = categoryMap.get(key);
     addNewDataToChart(myChart, key, value);
   }
@@ -218,11 +220,19 @@ function removeTransaction(id) {
   console.log("Id to be removed: " + id)
   let transactionEl = transactions.find(transaction => (transaction.id === id));
   console.log("Transaction Element to be removed: " + JSON.stringify(transactionEl));
-  console.log("Category to update: " + transactionEl.category + " without value: " + transactionEl.amount);
+  console.log("Category to update: " + transactionEl.category + " with value: " + transactionEl.amount);
   removeCategoryData(transactionEl.category, transactionEl.amount);
   transactions = transactions.filter(transaction => transaction.id !== id);
-  updateLocalStorage();
+  
+  clearDataFromChart(myChart);
+  console.log("Length of labels array in the chart: " + myChart.data.labels.length);
+  console.log("Length of labels array in the chart: " + categoryArray.length);
+  console.log("Length of data array in the chart: " + myChart.data.datasets[0].data.length);
+  console.log("Length of data array in the chart: " + dataChartArray.length);
 
+  myChart.destroy();
+  
+  updateLocalStorage();
   init();
 }
 
@@ -234,7 +244,7 @@ function removeCategoryData(category, removedAmount) {
     }
     else {
       categoryMap.set(category, categoryMap.get(category) - Math.abs(removedAmount));
-      console.log("Update category value is: " + categoryMap.get(category));
+      console.log("Updated category value is: " + categoryMap.get(category));
     }
   } catch (e) {
     alert("Error: " + e);
@@ -260,17 +270,22 @@ function init() {
 // Chart Functions
 //TODO understand how to generate different colors automatically
 function intializeChart() {
-  let i = 0;
   // If categoryMap not empty, initialize the labels
   console.log("Initializing chart...");
   if (categoryMap.size !== 0) {
-    console.log("Categories Map not empty, passing data...");
-    for (const [key, value] of categoryMap) {
-      categoryArray.push(key);
-      console.log("Adding new label: " + categoryArray[i]);
-      dataChartArray.push(value);
-      console.log("Adding new data: " + dataChartArray[i]);
-      i++;
+    let i = 0;
+    console.log("Categories Map not empty, has size, passing data...");
+    for (let [key, value] of categoryMap) {
+      if (value !== 0) {
+        console.log("Category value at key: " + key + " is different from zero, rendering graph...");
+        categoryArray.push(key);
+        console.log("After adding key the categoryArray has length: " + categoryArray.length);
+        console.log("Adding new label: " + categoryArray[i]);
+        dataChartArray.push(value);
+        console.log("Adding new data: " + dataChartArray[i]);
+
+        i++;
+      }
     }
   }
   myChart = new Chart(ctx, {type: 'pie', data: chartData} );
@@ -278,42 +293,43 @@ function intializeChart() {
 
 // TODO add new color for the new category
 function addNewDataToChart(chart, category, amount) {
-  if (!categoryMap.has(category)) {
-    chart.data.labels.push(category);
-    chart.data.datasets[0].data.push(amount);
-  }
-  else {
+  if (chart.data.labels.indexOf(category) > -1) {
     let catIndex = chart.data.labels.indexOf(category);
     chart.data.datasets[0].data[catIndex] = amount;
+  }
+  else {
+    chart.data.labels.push(category);
+    chart.data.datasets[0].data.push(amount);
   }
   
   chart.update();
 }
 
-function removeDataFromChart(chart) {
-  chart.data.labels.pop();
-  chart.data.datasets[0].data.pop();
+function removeDataFromChart(chart, label, datum) {
+  let labelIndex = chart.data.labels.indexOf(label);
+  let dataIndex = chart.data.datasets[0].data.indexOf(datum);
+  try {
+    if (labelIndex > -1 && dataIndex > -1) {
+      chart.data.labels.splice(labelIndex, 1);
+      chart.data.datasets[0].data.splice(dataIndex, 1);
+    }
+    else {
+      throw("Your are trying to remove a non existing item");
+    }
+  }
+  catch(e) {
+    alert("Error: " + e);
+  }
 
+  // chart.data.labels.pop();
+  // chart.data.datasets[0].data.pop();
   chart.update();
 }
 
-// function updateConfigByMutating(myChart) {
-//   myChart.options.plugins.title.text = 'new title';
-//   myChart.update();
-// }
-
-// function updateConfigAsNewObject(myChart) {
-//   myChart.options = {
-//     responsive: true,
-//     plugins: {
-//       title: {
-//         display: true,
-//         text: 'Chart.js'
-//       }
-//     },
-//   };
-//   myChart.update();
-// }
+function clearDataFromChart(chart) {
+  chart.data.labels.splice(0, chart.data.labels.length);
+  chart.data.datasets[0].data.splice(0, chart.data.datasets[0].data.length);
+}
 
 init();
 
