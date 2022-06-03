@@ -18,26 +18,63 @@ var localStorageTransactions = JSON.parse(
   localStorage.getItem('transactions')
 );
 
-var localStorageCategories = new Map(JSON.parse(
-  localStorage.getItem('categories'))
+var localStorageExpenses = new Map(JSON.parse(
+  localStorage.getItem('expenses'))
+);
+
+var localStorageIncomes = new Map(JSON.parse(
+  localStorage.getItem('incomes'))
 );
 
 var transactions =
   localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
-var categoryMap =
-  localStorage.getItem('categories') !== null ? localStorageCategories : new Map();
+var expensesMap =
+  localStorage.getItem('expenses') !== null ? localStorageExpenses : new Map();
+
+var incomesMap = 
+  localStorage.getItem('incomes') !== null ? localStorageIncomes : new Map();
 
 
-// Chart skeleton
-var categoryArray = [];
-var dataChartArray = [];
-
-var chartData = {
-  labels: categoryArray,
+// Expenses Chart skeleton
+var expensesCategoryArray = [];
+var expensesDataArray = [];
+var expensesChartData = {
+  labels: expensesCategoryArray,
   datasets: [{
-    label: 'My first dataset',
-    data: dataChartArray,
+    label: 'Expenses Dataset',
+    data: expensesDataArray,
+    backgroundColor: [
+      "#FF6633",
+      "#FFB399",
+      "#FF33FF",
+      "#FFFF99",
+      "#00B3E6",
+      "#E6B333",
+      "#3366E6",
+      "#999966",
+      "#809980",
+      "#E6FF80",
+      "#1AFF33",
+      "#999933",
+      "#FF3380",
+      "#CCCC00",
+      "#66E64D",
+      "#4D80CC"
+    ],
+    borderColor: 'rgb(255, 255, 255)',
+    hoverOffset: 4
+  }]
+}
+
+// Incomes Chart skeleton
+var incomesCategoryArray = [];
+var incomesDataArray = [];
+var incomesChartData = {
+  labels: incomesCategoryArray,
+  datasets: [{
+    label: 'Expenses Dataset',
+    data: incomesDataArray,
     backgroundColor: [
       "#FF6633",
       "#FFB399",
@@ -81,7 +118,7 @@ function addTransaction(e) {
 
     updateValues();
 
-    updatecategoryMap(transactionCategory.value, transactionAmount.value);
+    updateMaps(transactionCategory.value, transactionAmount.value, transaction.field);
 
     updateLocalStorage();
 
@@ -150,27 +187,50 @@ function updateValues() {
   expenses.innerText = `${expense}`;
 }
 
-function updatecategoryMap(key, value) {
-  // Check if category key already present in the Map
-  if (!categoryMap.has(key)) {
-    console.log("This is a new category, adding it to the map...");
-    categoryMap.set(key, Math.abs(value));
+function updateMaps(key, value, field) {
+  // check the transaction field, thus to update the correct Map
+  if (field === 'incomes') {
+    // Check if incomes category key already present in the Map
+    if (!incomesMap.has(key)) {
+      console.log("This is a new income category, adding it to the map...");
+      incomesMap.set(key, Math.abs(value));
+    }
+    else {
+      console.log("This income category is already present in the map, updating value of the key");
+      console.log("Before updating: " + incomesMap.get(key));
+      incomesMap.set(key, incomesMap.get(key) + Math.abs(value));
+    }
+    console.log("After updating: " + incomesMap.get(key));
   }
   else {
-    console.log("This category is already present in the map, updating value of the key");
-    console.log("Before updating: " + categoryMap.get(key));
-    categoryMap.set(key, categoryMap.get(key) + Math.abs(value));
+    // Check if expenses category key already present in the Map
+    if (!expensesMap.has(key)) {
+      console.log("This is a new expenses category, adding it to the map...");
+      expensesMap.set(key, Math.abs(value));
+    }
+    else {
+      console.log("This expenses category is already present in the map, updating value of the key");
+      console.log("Before updating: " + expensesMap.get(key));
+      expensesMap.set(key, expensesMap.get(key) + Math.abs(value));
+    }
+    console.log("After updating: " + expensesMap.get(key));
   }
-  console.log("After updating: " + categoryMap.get(key));
 }
 
 function updateChart(key) {
-  console.log("Updating Chart...");
-  if (categoryMap.has(key)) {
-    console.log("categoryMap has the new key, adding new data to chart...");
-    let value = categoryMap.get(key);
-    addNewDataToChart(myChart, key, value);
+  console.log("Updating Charts...");
+  if (expensesMap.has(key)) {
+    console.log("expensesMap has the new key, adding new data to chart...");
+    let value = expensesMap.get(key);
+    addNewDataToChart(expensesChart, key, value);
+  }
+  else if (incomesMap.has(key)) {
+    console.log("incomesMap has the new key, adding new data to chart...");
+    let value = incomesMap.get(key);
     addNewDataToChart(incomesChart, key, value);
+  }
+  else {
+    alert("Warning: This category does not belong to any Map, strange!");
   }
 }
 
@@ -180,18 +240,20 @@ function removeTransaction(id) {
   console.log("Id to be removed: " + id)
   let transactionEl = transactions.find(transaction => (transaction.id === id));
   console.log("Transaction Element to be removed: " + JSON.stringify(transactionEl));
-  console.log("Category to update: " + transactionEl.category + " with value: " + transactionEl.amount);
-  removeCategoryData(transactionEl.category, transactionEl.amount);
+  console.log("Category to update: " + transactionEl.category + " with value: " + transactionEl.amount + " for field: " + transactionEl.field);
+
+  removeCategoryData(transactionEl.field, transactionEl.category, transactionEl.amount);
+
   transactions = transactions.filter(transaction => transaction.id !== id);
   
-  clearDataFromChart(myChart);
+  clearDataFromChart(expensesChart);
   clearDataFromChart(incomesChart);
   console.log("Length of labels array in the chart: " + myChart.data.labels.length);
   console.log("Length of labels array in the chart: " + categoryArray.length);
   console.log("Length of data array in the chart: " + myChart.data.datasets[0].data.length);
   console.log("Length of data array in the chart: " + dataChartArray.length);
 
-  myChart.destroy();
+  expensesChart.destroy();
   incomesChart.destroy();
   
   updateLocalStorage();
@@ -199,14 +261,28 @@ function removeTransaction(id) {
 }
 
 // Update Category if transaction removed
-function removeCategoryData(category, removedAmount) {
+function removeCategoryData(field, category, removedAmount) {
   try {
-    if (!categoryMap.has(category)) {
-      throw("This category should exist, I'm removing a saved datum")
+    if (field === 'incomes') {
+      if (!incomesMap.has(category)) {
+        throw("This category should exist, I'm removing a saved datum")
+      }
+      else {
+        incomesMap.set(category, incomesMap.get(category) - Math.abs(removedAmount));
+        console.log("Updated category value is: " + incomesMap.get(category));
+      }
+    }
+    else if (field === 'expenses') {
+      if (!expensesMap.has(category)) {
+        throw("This category should exist, I'm removing a saved datum")
+      }
+      else {
+        expensesMap.set(category, expensesMap.get(category) - Math.abs(removedAmount));
+        console.log("Updated category value is: " + expensesMap.get(category));
+      }
     }
     else {
-      categoryMap.set(category, categoryMap.get(category) - Math.abs(removedAmount));
-      console.log("Updated category value is: " + categoryMap.get(category));
+      throw("Undefined field found!")
     }
   } catch (e) {
     alert("Error: " + e);
@@ -216,7 +292,8 @@ function removeCategoryData(category, removedAmount) {
 // Update local storage transactions
 function updateLocalStorage() {
   localStorage.setItem('transactions', JSON.stringify(transactions));
-  localStorage.setItem('categories', JSON.stringify(Array.from(categoryMap.entries())));
+  localStorage.setItem('expenses', JSON.stringify(Array.from(expensesMap.entries())));
+  localStorage.setItem('incomes', JSON.stringify(Array.from(incomesMap.entries())));
 }
 
 // Init app
@@ -226,32 +303,50 @@ function init() {
 
   transactions.forEach(addTransactionDOM);
   updateValues();
-  intializeChart();
+  intializeCharts();
 }
 
 // Chart Functions
 //TODO understand how to generate different colors automatically
-function intializeChart() {
+function intializeCharts() {
   // If categoryMap not empty, initialize the labels
-  console.log("Initializing chart...");
-  if (categoryMap.size !== 0) {
+  console.log("Initializing charts...");
+  if (expensesMap.size !== 0) {
+    console.log("Initializing expenses Chart...");
     let i = 0;
-    console.log("Categories Map not empty, has size, passing data...");
-    for (let [key, value] of categoryMap) {
+    console.log("Expenses Map not empty, has size, passing data...");
+    for (let [key, value] of expensesMap) {
       if (value !== 0) {
         console.log("Category value at key: " + key + " is different from zero, rendering graph...");
-        categoryArray.push(key);
-        console.log("After adding key the categoryArray has length: " + categoryArray.length);
-        console.log("Adding new label: " + categoryArray[i]);
-        dataChartArray.push(value);
-        console.log("Adding new data: " + dataChartArray[i]);
+        expensesCategoryArray.push(key);
+        console.log("After adding key the categoryArray has length: " + expensesCategoryArray.length);
+        console.log("Adding new label: " + expensesCategoryArray[i]);
+        expensesDataArray.push(value);
+        console.log("Adding new data: " + expensesDataArray[i]);
 
         i++;
       }
     }
   }
-  myChart = new Chart(ctxExpenses, {type: 'pie', data: chartData} );
-  incomesChart = new Chart(ctxIncomes, {type: 'pie', data: chartData});
+  if (incomesMap.size !== 0) {
+    console.log("Initializing incomes Chart...");
+    let i = 0;
+    console.log("Incomes Map not empty, has size, passing data...");
+    for (let [key, value] of incomesMap) {
+      if (value !== 0) {
+        console.log("Category value at key: " + key + " is different from zero, rendering graph...");
+        incomesCategoryArray.push(key);
+        console.log("After adding key the categoryArray has length: " + incomesCategoryArray.length);
+        console.log("Adding new label: " + incomesCategoryArray[i]);
+        incomesDataArray.push(value);
+        console.log("Adding new data: " + incomesDataArray[i]);
+
+        i++;
+      }
+    }
+  }
+  expensesChart = new Chart(ctxExpenses, {type: 'pie', data: expensesChartData} );
+  incomesChart = new Chart(ctxIncomes, {type: 'pie', data: incomesChartData});
 }
 
 // TODO add new color for the new category
