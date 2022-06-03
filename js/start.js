@@ -1,58 +1,17 @@
-//TODO
-// Understand why Map behaviour when trying to get data to pass to the chart 
-// is shitty as fuck
-
 // General
 const transactionForm = document.getElementById('addTransaction');
 const transactionText = document.getElementById('transText');
 const transactionCategory = document.getElementById('transCat');
 const transactionAmount = document.getElementById('transAmount');
 var balance = document.getElementById('balance');
-var ctx = document.getElementById('myChart').getContext('2d');
+var ctxExpenses = document.getElementById('expensesChart').getContext('2d');
+var ctxIncomes = document.getElementById('incomesChart').getContext('2d');
 // Expenses varibales
 var expenses = document.getElementById('expenses');
 var expensesList = document.getElementById('expensesList');
 // Incomes varibales
 var incomes = document.getElementById('incomes');
 var incomesList = document.getElementById('incomesList');
-
-// Fancy Feature Part
-// Highlighting mechanism when scrolling
-// Show active section when scrolling
-const highlightSection = () => {
-    const elem = document.querySelector('.highlight');
-    const transactionSection = document.querySelector('#transaction-section');
-    const expensesSection = document.querySelector('#expenses-section');
-    const accountsSection = document.querySelector('#accounts-section');
-    let scrollPos = window.scrollY;
-    // console.log(scrollPos);
-
-    // adds 'highlight' class to my menu items
-    if (window.innerWidth > 960 && scrollPos < 600) {
-        transactionSection.classList.add('highlight')
-        expensesSection.classList.remove('highlight')
-
-        return
-    }
-    else if( window.innerWidth > 960 && scrollPos < 1400) {
-        expensesSection.classList.add('highlight')
-        transactionSection.classList.remove('highlight')
-        accountsSection.classList.remove('highlight')
-        return
-    }
-    else if (window.innerWidth > 960 && scrollPos < 2345) {
-        accountsSection.classList.add('highlight')
-        expensesSection.classList.remove('highlight')
-        return
-    }
-
-    if ((elem && window.innerWidth < 960 && scrollPos < 600) || elem) {
-        elem.classList.remove('highlight')
-    }
-}
-
-window.addEventListener('scroll', highlightSection);
-window.addEventListener('click', highlightSection);
 
 // Main Part for adding items to lists
 var localStorageTransactions = JSON.parse(
@@ -211,6 +170,7 @@ function updateChart(key) {
     console.log("categoryMap has the new key, adding new data to chart...");
     let value = categoryMap.get(key);
     addNewDataToChart(myChart, key, value);
+    addNewDataToChart(incomesChart, key, value);
   }
 }
 
@@ -225,12 +185,14 @@ function removeTransaction(id) {
   transactions = transactions.filter(transaction => transaction.id !== id);
   
   clearDataFromChart(myChart);
+  clearDataFromChart(incomesChart);
   console.log("Length of labels array in the chart: " + myChart.data.labels.length);
   console.log("Length of labels array in the chart: " + categoryArray.length);
   console.log("Length of data array in the chart: " + myChart.data.datasets[0].data.length);
   console.log("Length of data array in the chart: " + dataChartArray.length);
 
   myChart.destroy();
+  incomesChart.destroy();
   
   updateLocalStorage();
   init();
@@ -288,7 +250,8 @@ function intializeChart() {
       }
     }
   }
-  myChart = new Chart(ctx, {type: 'pie', data: chartData} );
+  myChart = new Chart(ctxExpenses, {type: 'pie', data: chartData} );
+  incomesChart = new Chart(ctxIncomes, {type: 'pie', data: chartData});
 }
 
 // TODO add new color for the new category

@@ -1,0 +1,22 @@
+/* Pie Chart Section */
+.piechart__section {
+    color: #fff;
+}
+
+.piechart__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto;
+    max-width: 1300px;
+    padding: 30px;
+}
+
+.piechart__container--graph {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 80%;
+}

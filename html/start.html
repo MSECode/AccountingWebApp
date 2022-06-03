@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/navbar-style.css">
     <link rel="stylesheet" href="/css/start-style.css">
+    <link rel="stylesheet" href="/css/chart-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
@@ -100,10 +101,19 @@
             </div>
         </div>
     </div>
-    <div class="piechart__container">
-        <canvas id="myChart"></canvas>
+    <div class="piechart__section">
+        <div class="piechart__container">
+            <div class="piechart__container--graph">
+                <canvas id="expensesChart"></canvas>
+            </div>
+            <div class="piechart__container--graph">
+                <canvas id="incomesChart"></canvas>
+            </div>
+        </div>
+        
     </div>
     <script src="/js/start.js"></script>
+    <script src="/js/start-effects.js"></script>
 </body>
 </html>
 
