@@ -1,0 +1,6 @@
+/* Pie Chart Section */
+.piechart__container--graph {
+    position: relative;
+    margin: auto 20px;
+    padding: 15px;
+}

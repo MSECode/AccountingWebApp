@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Start your budget </title>
+    <link rel="shortcut icon" type="image/jpg" href="/images/favicon.png"/>
+    <link rel="import" href="/html/chart.html">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/navbar-style.css">
+    <link rel="stylesheet" href="/css/start-style.css">
+    <link rel="stylesheet" href="/css/chart-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <div class="navbar__container">
+            <a href="/#home" id="navbar__logo">Money Manager</a>
+            <div class="navbar__toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="start__subheader">
+                <h1>Your Balance: € <span id="balance">0.00</span></h1>
+            </div>
+            <ul class="navbar__menu">
+                <li class="navbar__item">
+                    <a href="#" class="navbar__links" id="transaction-section">Transaction</a>
+                </li>
+                <li class="navbar__item">
+                    <a href="#ExpensesSection" class="navbar__links" id="expenses-section">Expenses</a>
+                </li>
+                <li class="navbar__item">
+                    <a href="#AccountsSection" class="navbar__links" id="accounts-section">Accounts</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Start Section -->
+    <div class="start" id="start">
+        <div class="start__header">
+            <h1>These are your Accounts and your Expenses</h1>
+        </div>
+        <div class="transactions" id="Transaction">
+            <div class="start__container--form">
+                <h2>Here you can insert a new transaction</h2>
+                <p>Add new transaction</p>
+                <form class="transaction__form" id="addTransaction">
+                    <div class="transaction__form--control">
+                        <label for="text">Transaction Description</label>
+                        <input type="text" id="transText" placeholder="Enter description..." />
+                    </div>
+                    <div class="transaction__form--control">
+                        <label for="text">Transaction Category</label>
+                        <input type="text" id="transCat" placeholder="Enter category..." />
+                    </div>
+                    <div class="transaction__form--control">
+                        <label for="amount">Transaction Amount</label>
+                        <input type="number" id="transAmount" placeholder="Enter amount..." />
+                    </div>
+                    <button class="transaction__btn" type="submit">Add Transaction</button>
+                </form>
+            </div>
+        </div>
+        <!-- Expenses Containers -->
+        <div class="expenses" id="ExpensesSection">
+            <div class="start__container">
+                <div class="start__diagram--container">
+                    <h1>Expenses: € <span id="expenses">0.00</span></h1>
+                    <div class="piechart__container--graph">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                </div>
+                <div class="start__table--container">
+                    <h1>These are all of your expenses</h1>
+                    <ul class="list" id="expensesList">
+                        <li class="minus">
+                        Cash <span>-€400</span><button class="delete-btn">x</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Accounts Containers -->
+        <div class="accounts" id="AccountsSection">
+            <div class="start__container">
+                <div class="start__diagram--container">
+                    <h1>Accounts: € <span id="incomes">0.00</span></h1>
+                    <div class="piechart__container--graph">
+                        <canvas id="incomesChart"></canvas>
+                    </div>
+                </div>
+                <div class="start__table--container">
+                    <h1>These are all of your incomes</h1>
+                    <ul class="list" id="incomesList" >
+                        <li class="plus">
+                        Cash <span>€400</span><button class="delete-btn">x</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/start.js"></script>
+    <script src="/js/start-effects.js"></script>
+</body>
+</html>
+
+<!--
+
+TODO
+Write js code for making the chart pie diagram interactive
+
+TODO
+Update CSS for mobile use even in start page
+-->
+

@@ -1,0 +1,289 @@
+.start {
+    background-color: #131313;
+    padding: 4rem 0;
+}
+
+/* Header Section */
+.start__header {
+    font-size: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 90%;
+    text-align: center;
+    padding: 15px 30px 40px 30px;
+}
+
+.start__header h1 {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    .start__header h1{
+        font-size: 40px;
+    }
+}
+
+/* Subheader Section */
+
+.start__subheader {
+    font-size: 12px;
+    display: flex;
+    height: 80px;
+    align-items: center;
+    margin: auto;
+    margin-left: 80px;
+    text-align: left;
+    color: #fff;
+}
+
+.start__subheader span {
+    color: #ff8177;
+}
+
+@media screen and (max-width: 960) {
+    .start__subheader {
+        font-size: 10px;
+    }
+
+}
+
+/* Transaction Section */
+.start__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    height: 90%;
+    z-index: 1;
+    width: 100%;
+    max-width: 1300px;
+    padding: 25px 50px;
+}
+
+.start__container--form {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+.start__container--form h2 {
+    font-size: 2rem;
+    background-color: #ff3b6f;
+    background-image: linear-gradient(to top, #ff087b 0%, #ed1a52 100%);
+    background-size: 100%;
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-align: center;
+}
+
+.start__container--form p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: #ff8177;
+    background: -webkit-linear-gradient(to right, #9114ff, #da22ff);
+    background: linear-gradient(to right, #8f0eff, #da22ff);
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-align: center;
+}
+
+.start__table--container {
+    color: #fff;
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.start__table--container h1 {
+    font-size: 2rem;
+    background-color: #ff3b6f;
+    background-image: linear-gradient(to top, #ff087b 0%, #ed1a52 100%);
+    background-size: 100%;
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    margin-top: 30px;
+}
+
+.start__table--container h2 {
+    font-size: 2rem;
+    background-color: #ff3b6f;
+    background-image: linear-gradient(to top, #ff087b 0%, #ed1a52 100%);
+    background-size: 100%;
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+}
+
+.start__table--container p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: #ff8177;
+    background: -webkit-linear-gradient(to right, #9114ff, #da22ff);
+    background: linear-gradient(to right, #8f0eff, #da22ff);
+    background-clip: unset;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+}
+
+.start__diagram--container {
+    color: #fff;
+    height: 100%;
+    width: 90%;
+    text-align: center;
+}
+
+.start__diagram--card {
+    margin: 10px;
+    height: 500px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
+}
+
+/* General Transaction form section */
+/* .transactions {
+    padding: 10rem 0;
+} */
+
+.transaction__form {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.transaction__form--control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+label[for='text'],
+label[for='amount'] {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+input[type='text'],
+input[type='number'] {
+  border: 1px solid #dedede;
+  border-radius: 2px;
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 400;
+  padding: 10px;
+  width: 100%;
+}
+
+.transaction__btn {
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 40px;
+    
+}
+  
+.list li {
+    background-color: #fff;
+    box-shadow: var(--box-shadow);
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    position: relative;
+    padding: 10px;
+    margin: 10px 0;
+}
+  
+.list li.plus {
+    border-right: 5px solid #2ecc71;
+}
+
+.list li.minus {
+    border-right: 5px solid #c0392b;
+}
+
+.delete-btn {
+    cursor: pointer;
+    background-color: #e74c3c;
+    border: 0;
+    color: #fff;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 2px 5px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-100%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.list li:hover .delete-btn {
+    opacity: 1;
+}
+
+/* Expenses Section */
+
+.expenses {
+    padding: 10rem 0;
+}
+
+/* Accounts Section */
+
+.accounts {
+    padding: 10rem 0;
+}
+
+
