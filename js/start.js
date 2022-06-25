@@ -109,7 +109,8 @@ function addTransaction(e) {
       text: transactionText.value,
       category: transactionCategory.value,
       amount: +transactionAmount.value,
-      field: Math.sign(transactionAmount.value) === 1 ? 'incomes' : 'expenses'
+      field: Math.sign(transactionAmount.value) === 1 ? 'incomes' : 'expenses',
+      date: Date.now()
     };
 
     transactions.push(transaction);
@@ -146,8 +147,12 @@ function addTransactionDOM(transaction) {
     item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
 
     item.innerHTML = `
+        <span>
         ${transaction.text} 
+        </span>
+        <span>
         ${transaction.category} 
+        </span>
         <span>${sign}${Math.abs(
         transaction.amount
         )}</span> <button class="delete-btn" onclick="removeTransaction(${
@@ -248,10 +253,10 @@ function removeTransaction(id) {
   
   clearDataFromChart(expensesChart);
   clearDataFromChart(incomesChart);
-  console.log("Length of labels array in the chart: " + myChart.data.labels.length);
-  console.log("Length of labels array in the chart: " + categoryArray.length);
-  console.log("Length of data array in the chart: " + myChart.data.datasets[0].data.length);
-  console.log("Length of data array in the chart: " + dataChartArray.length);
+  console.log("Length of labels array in the chart: " + expensesChart.data.labels.length);
+  console.log("Length of labels array in the chart: " + incomesCategoryArray.length);
+  console.log("Length of data array in the chart: " + expensesChart.data.datasets[0].data.length);
+  console.log("Length of data array in the chart: " + incomesDataArray.length);
 
   expensesChart.destroy();
   incomesChart.destroy();
@@ -345,8 +350,8 @@ function intializeCharts() {
       }
     }
   }
-  expensesChart = new Chart(ctxExpenses, {type: 'pie', data: expensesChartData} );
-  incomesChart = new Chart(ctxIncomes, {type: 'pie', data: incomesChartData});
+  expensesChart = new Chart(ctxExpenses, {type: 'pie', data: expensesChartData, options: {responsive: true}} );
+  incomesChart = new Chart(ctxIncomes, {type: 'pie', data: incomesChartData, options: {responsive: true}});
 }
 
 // TODO add new color for the new category

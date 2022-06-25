@@ -3,7 +3,9 @@
     padding: 4rem 0;
 }
 
+/* Header Section */
 .start__header {
+    font-size: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,7 +23,16 @@
     color: #fff;
 }
 
+@media screen and (max-width: 768px) {
+    .start__header h1{
+        font-size: 40px;
+    }
+}
+
+/* Subheader Section */
+
 .start__subheader {
+    font-size: 12px;
     display: flex;
     height: 80px;
     align-items: center;
@@ -35,6 +46,14 @@
     color: #ff8177;
 }
 
+@media screen and (max-width: 960) {
+    .start__subheader {
+        font-size: 10px;
+    }
+
+}
+
+/* Transaction Section */
 .start__container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -89,8 +108,8 @@
 
 .start__table--container {
     color: #fff;
-    height: 80%;
-    width: 100%;
+    height: 100%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -141,7 +160,7 @@
 .start__diagram--container {
     color: #fff;
     height: 100%;
-    width: 100%;
+    width: 90%;
     text-align: center;
 }
 
@@ -206,9 +225,13 @@ input[type='number'] {
 }
 
 .list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     list-style-type: none;
     padding: 0;
     margin-bottom: 40px;
+    
 }
   
 .list li {
@@ -217,6 +240,7 @@ input[type='number'] {
     color: #333;
     display: flex;
     justify-content: space-between;
+    text-align: center;
     position: relative;
     padding: 10px;
     margin: 10px 0;
@@ -250,9 +274,13 @@ input[type='number'] {
     opacity: 1;
 }
 
+/* Expenses Section */
+
 .expenses {
     padding: 10rem 0;
 }
+
+/* Accounts Section */
 
 .accounts {
     padding: 10rem 0;
