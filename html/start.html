@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Set your Budget </title>
+    <title> Start your budget </title>
+    <link rel="shortcut icon" type="image/jpg" href="/images/favicon.png"/>
+    <link rel="import" href="/html/chart.html">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/navbar-style.css">
     <link rel="stylesheet" href="/css/start-style.css">
-    
+    <link rel="stylesheet" href="/css/chart-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <!-- Navbar Section -->
@@ -69,7 +72,9 @@
             <div class="start__container">
                 <div class="start__diagram--container">
                     <h1>Expenses: € <span id="expenses">0.00</span></h1>
-                    <div class="start__diagram--card"><i class="fas fa-chart-pie"></i></div>
+                    <div class="piechart__container--graph">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
                 </div>
                 <div class="start__table--container">
                     <h1>These are all of your expenses</h1>
@@ -86,7 +91,9 @@
             <div class="start__container">
                 <div class="start__diagram--container">
                     <h1>Accounts: € <span id="incomes">0.00</span></h1>
-                    <div class="start__diagram--card"><i class="fas fa-chart-pie"></i></div>
+                    <div class="piechart__container--graph">
+                        <canvas id="incomesChart"></canvas>
+                    </div>
                 </div>
                 <div class="start__table--container">
                     <h1>These are all of your incomes</h1>
@@ -100,17 +107,16 @@
         </div>
     </div>
     <script src="/js/start.js"></script>
+    <script src="/js/start-effects.js"></script>
 </body>
 </html>
 
 <!--
-TODO #1
-Now the transaction added work even as expenses and as 
-income
-Imporve js code for handling them separately 
-for different button and lists
 
-TODO #2
+TODO
 Write js code for making the chart pie diagram interactive
+
+TODO
+Update CSS for mobile use even in start page
 -->
 

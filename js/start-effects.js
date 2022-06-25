@@ -10,30 +10,33 @@ const mobileMenu = () => {
 
 menu.addEventListener('click', mobileMenu);
 
-// Show active menu when scrolling
-const highlightMenu = () => {
+// Fancy Feature Part
+// Highlighting mechanism when scrolling
+// Show active section when scrolling
+const highlightSection = () => {
     const elem = document.querySelector('.highlight');
-    const homeMenu = document.querySelector('#home-page');
-    const aboutMenu = document.querySelector('#about-page');
-    const servicesMenu = document.querySelector('#services-page');
+    const transactionSection = document.querySelector('#transaction-section');
+    const expensesSection = document.querySelector('#expenses-section');
+    const accountsSection = document.querySelector('#accounts-section');
     let scrollPos = window.scrollY;
     // console.log(scrollPos);
 
     // adds 'highlight' class to my menu items
-    if( window.innerWidth > 960 && scrollPos < 600) {
-        homeMenu.classList.add('highlight')
-        aboutMenu.classList.remove('highlight')
+    if (window.innerWidth > 960 && scrollPos < 600) {
+        transactionSection.classList.add('highlight')
+        expensesSection.classList.remove('highlight')
+
         return
     }
-    else if (window.innerWidth > 960 && scrollPos < 1400) {
-        aboutMenu.classList.add('highlight')
-        homeMenu.classList.remove('highlight')
-        servicesMenu.classList.remove('highlight')
+    else if( window.innerWidth > 960 && scrollPos < 1400) {
+        expensesSection.classList.add('highlight')
+        transactionSection.classList.remove('highlight')
+        accountsSection.classList.remove('highlight')
         return
     }
     else if (window.innerWidth > 960 && scrollPos < 2345) {
-        servicesMenu.classList.add('highlight')
-        aboutMenu.classList.remove('highlight')
+        accountsSection.classList.add('highlight')
+        expensesSection.classList.remove('highlight')
         return
     }
 
@@ -42,8 +45,8 @@ const highlightMenu = () => {
     }
 }
 
-window.addEventListener('scroll', highlightMenu);
-window.addEventListener('click', highlightMenu);
+window.addEventListener('scroll', highlightSection);
+window.addEventListener('click', highlightSection);
 
 // Close mobile menu when clicking on a menu item
 const hideMobileMenu = () => {
